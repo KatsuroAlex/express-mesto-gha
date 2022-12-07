@@ -2,7 +2,7 @@ const path = require('path');
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const router = require('./routes');
+// const router = require('./routes');
 
 // const PORT = 3000;
 const { PORT = 3000, BASE_PATH } = process.env;
@@ -17,17 +17,18 @@ mongoose.connect('mongodb://127.0.0.1:27017/mestodb', {
   console.log('Connected to MongoDB');
 });
 
-// подключаем мидлвары, роуты и всё остальное...
+// подключаем мидлвары, роуты и тд
 
 app.use(bodyParser.json());
-
-/// основные роуты
-app.use('/users', require('./routes/users'));
 
 app.use((req, res, next) => {
   req.user = { _id: '638a18e5564e527e4b5bd599' }; // вставьте сюда _id созданного в предыдущем пункте пользователя
   next();
 });
+
+/// основные роуты
+app.use('/users', require('./routes/users'));
+app.use('/cards', require('./routes/cards'));
 
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}!`);

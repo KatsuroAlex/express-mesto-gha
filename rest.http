@@ -1,0 +1,61 @@
+### Получить всех пользователей
+GET http://localhost:3000/users
+
+### возвращает пользователя по ID
+GET http://localhost:3000/users/638a18e5564e527e4b5bd599
+
+### Создает пользователя
+POST http://localhost:3000/users
+Content-Type: application/json
+
+{
+  "name": "Твцawdawdфв11",
+  "about": "Информация о себе111123",
+  "avatar": "https://plus.unsplash.com/premium_photo-1661342419580-436f25048a51?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwyNXx8fGVufDB8fHx8&auto=format&fit=crop&w=700&q=60"
+}
+
+### Обновить данные пользователя
+PATCH http://localhost:3000/users/me
+Content-Type: application/json
+
+{
+  "name": "Твцawdawdфв0000123",
+  "about": "Информация о себе00000123"
+}
+
+### Обновить Аватар пользователя
+PATCH http://localhost:3000/users/me/avatar
+Content-Type: application/json
+
+{
+  "avatar": "https://images.unsplash.com/photo-1670238115034-cf9936ae00ba?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwyOXx8fGVufDB8fHx8&auto=format&fit=crop&w=700&q=60"
+}
+
+
+
+
+
+
+### получить все карточки
+GET http://localhost:3000/cards
+
+### создает карточку
+POST http://localhost:3000/cards
+Content-Type: application/json
+
+{
+  "name": "1234",
+  "link": "https://images.unsplash.com/photo-1670070633288-72a46e449866?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwzfHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=900&q=60",
+  "owner": "638a18e5564e527e4b5bd599"
+}
+
+### удаляет карточку по id
+DELETE http://localhost:3000/cards/638e4ce3bdb037be0f6d64d5
+
+### поставить лайк на карточку
+PUT http://localhost:3000/cards/638b584d6dd679aae9c6f5a3/likes
+
+### убрать лайк с карточки
+DELETE http://localhost:3000/cards/638b584d6dd679aae9c6f5a3/likes
+
+
