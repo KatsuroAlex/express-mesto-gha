@@ -4,12 +4,19 @@ const createUser = async (req, res) => {
   try {
     const { name, about, avatar } = req.body;
     const user = await User.create({ name, about, avatar });
-    return res.status(200).json({ user });
+    return res.status(200).json(user);
   } catch (e) {
     console.log(e);
     return res.status(400).json({ message: 'Произошла ошибка' });
   }
 };
+
+
+
+
+
+
+
 
 const getUsers = async (req, res) => {
   try {
