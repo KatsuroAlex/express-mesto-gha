@@ -38,7 +38,7 @@ const getCards = async (req, res) => {
 const createCard = async (req, res) => {
   try {
     const card = await Card.create(req.body);
-    console.log(req.user); // _id станет доступен
+    console.log(req.user._id); // _id станет доступен
     return res.status(201).json(card);
   } catch (e) {
     console.log(e);
@@ -64,8 +64,7 @@ const createCard = async (req, res) => {
 const deleteCard = (req, res) => {
   Card.findById(req.params.cardId)
     .then((card) => {
-      // if (String(card.owner) === String(req.user._id)) {
-      if (String(card.owner) === String(req.user)) {
+      if (String(card.owner) === String(req.user._id)) {
         card.remove();
         res.send({ message: 'Пост удален' });
       }

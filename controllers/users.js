@@ -3,17 +3,28 @@ const User = require('../models/user');
 const createUser = async (req, res) => {
   try {
     const user = await User.create(req.body);
-    return res.status(201).json({ user });
+    return res.status(200).json({ user });
   } catch (e) {
     console.log(e);
     return res.status(400).json({ message: 'Произошла ошибка' });
   }
 };
 
+// const createUser = async (req, res) => {
+//   try {
+//     const { name, about, avatar } = req.body;
+//     const user = await User.create(req.body);
+//     return res.status(201).json({ user });
+//   } catch (e) {
+//     console.log(e);
+//     return res.status(400).json({ message: 'Произошла ошибка' });
+//   }
+// };
+
 const getUsers = async (req, res) => {
   try {
     const users = await User.find({});
-    return res.status(200).json(users);
+    return res.status(200).json({ users });
   } catch (e) {
     console.log(e);
     return res.status(400).json({ message: 'Произошла ошибка' });
@@ -49,8 +60,7 @@ const updateUser = async (req, res) => {
   try {
     const updates = req.body;
     const options = { new: true };
-    // const result = await User.findByIdAndUpdate(req.user._id, updates, options);
-    const result = await User.findByIdAndUpdate(req.user, updates, options);
+    const result = await User.findByIdAndUpdate(req.user._id, updates, options);
     console.log(req.user);
     if (result === null) {
       return res.status(404).json({ message: 'User not found' });
