@@ -6,7 +6,7 @@ const getCards = async (req, res) => {
     return res.status(200).json(cards);
   } catch (e) {
     console.error(e);
-    return res.status(500).json({ message: 'Произошла ошибка' });
+    return res.status(400).json({ message: 'Произошла ошибка' });
   }
 };
 
@@ -41,8 +41,8 @@ const createCard = async (req, res) => {
     console.log(req.user); // _id станет доступен
     return res.status(201).json(card);
   } catch (e) {
-    console.error(e);
-    return res.status(500).json({ message: 'Произошла ошибка' });
+    console.log(e);
+    return res.status(400).json({ message: 'Произошла ошибка' });
   }
 };
 
@@ -64,15 +64,16 @@ const createCard = async (req, res) => {
 const deleteCard = (req, res) => {
   Card.findById(req.params.cardId)
     .then((card) => {
-      if (String(card.owner) === String(req.user._id)) {
+      // if (String(card.owner) === String(req.user._id)) {
+      if (String(card.owner) === String(req.user)) {
         card.remove();
         res.send({ message: 'Пост удален' });
       }
       res.send({ message: 'Недостаточно прав для удаления карточки' });
     })
     .catch((e) => {
-      console.error(e);
-      return res.status(500).json({ message: 'Произошла ошибка' });
+      console.log(e);
+      return res.status(400).json({ message: 'Произошла ошибка' });
     });
 };
 
@@ -84,8 +85,8 @@ const likeCard = (req, res) => {
   )
     .then((card) => res.send(card))
     .catch((e) => {
-      console.error(e);
-      return res.status(500).json({ message: 'Произошла ошибка' });
+      console.log(e);
+      return res.status(400).json({ message: 'Произошла ошибка' });
     });
 };
 
@@ -97,8 +98,8 @@ const dislikeCard = (req, res) => {
   )
     .then((card) => res.send(card))
     .catch((e) => {
-      console.error(e);
-      return res.status(500).json({ message: 'Произошла ошибка' });
+      console.log(e);
+      return res.status(400).json({ message: 'Произошла ошибка' });
     });
 };
 

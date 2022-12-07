@@ -5,8 +5,8 @@ const createUser = async (req, res) => {
     const user = await User.create(req.body);
     return res.status(201).json({ user });
   } catch (e) {
-    console.error(e);
-    return res.status(500).json({ message: 'Произошла ошибка' });
+    console.log(e);
+    return res.status(400).json({ message: 'Произошла ошибка' });
   }
 };
 
@@ -15,8 +15,8 @@ const getUsers = async (req, res) => {
     const users = await User.find({});
     return res.status(200).json(users);
   } catch (e) {
-    console.error(e);
-    return res.status(500).json({ message: 'Произошла ошибка' });
+    console.log(e);
+    return res.status(400).json({ message: 'Произошла ошибка' });
   }
 };
 
@@ -29,8 +29,8 @@ const getUser = async (req, res) => {
     }
     return res.status(200).json(user);
   } catch (e) {
-    console.error(e);
-    return res.status(500).json({ message: 'Произошла ошибка' });
+    console.log(e);
+    return res.status(400).json({ message: 'Произошла ошибка' });
   }
 };
 
@@ -49,15 +49,16 @@ const updateUser = async (req, res) => {
   try {
     const updates = req.body;
     const options = { new: true };
-    const result = await User.findByIdAndUpdate(req.user._id, updates, options);
+    // const result = await User.findByIdAndUpdate(req.user._id, updates, options);
+    const result = await User.findByIdAndUpdate(req.user, updates, options);
     console.log(req.user);
     if (result === null) {
       return res.status(404).json({ message: 'User not found' });
     }
     return res.status(200).json(result);
   } catch (e) {
-    console.error(e);
-    return res.status(500).json({ message: 'Произошла ошибка' });
+    console.log(e);
+    return res.status(400).json({ message: 'Произошла ошибка' });
   }
 };
 
@@ -67,8 +68,8 @@ const updateAvatar = async (req, res) => {
     const user = await User.findByIdAndUpdate(req.user, req.body, options);
     return res.status(201).json({ user });
   } catch (e) {
-    console.error(e);
-    return res.status(500).json({ message: 'Произошла ошибка' });
+    console.log(e);
+    return res.status(400).json({ message: 'Произошла ошибка' });
   }
 };
 
