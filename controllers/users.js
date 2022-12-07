@@ -6,7 +6,7 @@ const createUser = async (req, res) => {
     const user = await User.create({ name, about, avatar });
 
 
-    if (err.name === 'SomeErrorName') return res.status(ERROR_CODE).send(...);
+    // if (err.name === 'SomeErrorName') return res.status(ERROR_CODE).send(...);
 
 
     return res.status(200).json(user);

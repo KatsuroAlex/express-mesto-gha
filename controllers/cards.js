@@ -10,7 +10,7 @@ const {
 const getCards = async (req, res) => {
   try {
     const cards = await Card.find({});
-    if (err.name === 'SomeErrorName') return res.status(ERROR_CODE).send(...);
+    // if (err.name === 'SomeErrorName') return res.status(ERROR_CODE).send(...);
     return res.status(200).json(cards);
   } catch (e) {
     console.error(e);
@@ -45,8 +45,8 @@ const getCards = async (req, res) => {
 
 const createCard = async (req, res) => {
   try {
-    const {name, link} = req.body;
-    const card = await Card.create({name, link, owner: req.user._id});
+    const { name, link } = req.body;
+    const card = await Card.create({ name, link, owner: req.user._id });
     console.log(req.user._id); // _id станет доступен
     return res.status(201).json(card);
   } catch (e) {
