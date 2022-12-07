@@ -4,6 +4,11 @@ const createUser = async (req, res) => {
   try {
     const { name, about, avatar } = req.body;
     const user = await User.create({ name, about, avatar });
+
+
+    if (err.name === 'SomeErrorName') return res.status(ERROR_CODE).send(...);
+
+
     return res.status(200).json(user);
   } catch (e) {
     console.log(e);
@@ -11,22 +16,32 @@ const createUser = async (req, res) => {
   }
 };
 
-
-
-
-
-
-
+// const getUsers = async (req, res) => {
+//   try {
+//     const users = await User.find({});
+//     return res.status(200).json({ users });
+//   } catch (e) {
+//     console.log(e);
+//     return res.status(400).json({ message: 'Произошла ошибка' });
+//   }
+// };
 
 const getUsers = async (req, res) => {
   try {
     const users = await User.find({});
-    return res.status(200).json({ users });
+    return res.status(200).send(users.map((user) => {
+      const { name, about, avatar, _id } = user;
+      return { _id, name, about, avatar };
+    }));
   } catch (e) {
     console.log(e);
     return res.status(400).json({ message: 'Произошла ошибка' });
   }
 };
+
+
+
+
 
 const getUser = async (req, res) => {
   try {
