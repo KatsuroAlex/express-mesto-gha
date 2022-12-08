@@ -18,7 +18,7 @@ const createUser = async (req, res) => {
       return res.status(ERROR_VALIDATION).send({ message: 'Переданы некорректные данные при создании карточки' });
     }
     console.error(e);
-    return res.status(ERROR_SERVER_FAIL).json({ message: 'Произошла ошибка' });
+    return res.status(ERROR_VALIDATION).json({ message: 'Произошла ошибка' });
   }
 };
 
