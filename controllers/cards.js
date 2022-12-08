@@ -4,7 +4,6 @@ const {
   ERROR_NOT_FOUND,
   ERROR_SERVER_FAIL,
   SUCCESS,
-  USER_CREATED,
 } = require('./constants');
 
 const getCards = async (req, res) => {
@@ -46,7 +45,7 @@ const createCard = async (req, res) => {
     const { name, link } = req.body;
     const card = await Card.create({ name, link, owner: req.user._id });
     console.log(req.user._id); // _id станет доступен
-    return res.status(USER_CREATED).json(card);
+    return res.status(SUCCESS).json(card);
   } catch (e) {
     if (e.name === 'ValidationError' || e.name === 'SomeError') {
       console.error(e);
@@ -144,10 +143,10 @@ const dislikeCard = async (req, res) => {
 //     .catch((e) => {
 //       if (e.name === 'ValidationError' || e.name === 'SomeError') {
 //         console.error(e);
-//         return res.status(ERROR_VALIDATION).send({ message: 'Переданы некорректные данные для постановки/снятии лайка' });
+//         return res.status(ERROR_VALIDATION).send({ message: 'Переданы некорректные ' });
 //       }
 //       if (e.name === 'CastError') {
-//         return res.status(ERROR_NOT_FOUND).send({ message: 'Переданы некорректные данные id карточки' });
+//         return res.status(ERROR_NOT_FOUND).send({ message: 'Переданы некорректные д' });
 //       }
 //       console.error(e);
 //       return res.status(ERROR_SERVER_FAIL).json({ message: 'Произошла ошибка' });
