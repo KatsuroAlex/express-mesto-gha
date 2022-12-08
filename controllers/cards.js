@@ -68,7 +68,7 @@ const deleteCard = async (req, res) => {
     if (card === null) {
       return res.status(ERROR_NOT_FOUND).json({ message: 'Card not found' });
     }
-    res.send({ message: 'Карточка с указанным id не найдена' });
+    return res.send({ message: 'Карточка с указанным id не найдена' });
   } catch (e) {
     console.error(e);
     return res.status(ERROR_SERVER_FAIL).json({ message: 'Произошла ошибка' });
@@ -111,26 +111,6 @@ const likeCard = async (req, res) => {
     return res.status(ERROR_SERVER_FAIL).json({ message: 'Произошла ошибка' });
   }
 };
-
-// const likeCard = (req, res) => {
-//   Card.findByIdAndUpdate(
-//     req.params.cardId,
-//     { $addToSet: { likes: req.user } },
-//     { new: true },
-//   )
-//     .then((card) => res.send(card))
-//     .catch((e) => {
-//       if (e.name === 'ValidationError' || e.name === 'SomeError') {
-//         console.error(e);
-//         return res.status(ERROR_VALIDATION).send({ message: 'Переданы некорректные данные для постановки/снятии лайка' });
-//       }
-//       if (e.name === 'CastError') {
-//         return res.status(ERROR_NOT_FOUND).send({ message: 'Переданы некорректные данные id карточки' });
-//       }
-//       console.error(e);
-//       return res.status(ERROR_SERVER_FAIL).json({ message: 'Произошла ошибка' });
-//     });
-// };
 
 const dislikeCard = async (req, res) => {
   try {
