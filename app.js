@@ -8,6 +8,8 @@ const bodyParser = require('body-parser');
 const { PORT = 3000, BASE_PATH } = process.env;
 const app = express();
 
+app.use(bodyParser.json());
+
 // подключаемся к серверу mongo
 mongoose.connect('mongodb://127.0.0.1:27017/mestodb', {
   useNewUrlParser: true,
@@ -18,8 +20,6 @@ mongoose.connect('mongodb://127.0.0.1:27017/mestodb', {
 });
 
 // подключаем мидлвары, роуты и тд
-
-app.use(bodyParser.json());
 
 app.use((req, res, next) => {
   req.user = { _id: '638a18e5564e527e4b5bd599' }; // вставьте сюда _id созданного в предыдущем пункте пользователя
