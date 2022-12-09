@@ -50,16 +50,16 @@ const getUser = async (req, res) => {
     const { id } = req.params; // Достаем id через деструктуризацию
     const user = await User.findById(id);
     if (user === null) {
-      return res.status(ERROR_VALIDATION).json({ message: 'Пользователь по указанному id не найден' });
+      return res.status(ERROR_NOT_FOUND).json({ message: 'Пользователь по указанному id не найден' });
     }
     return res.status(SUCCESS).json(user);
   } catch (e) {
-    if (e.name === 'ValidationError' || e.name === 'SomeError') {
+    if (e.name === 'CastError') {
       console.error(e);
-      return res.status(ERROR_VALIDATION).send({ message: 'Переданы некорректные данные для постановки/снятии лайка' });
+      return res.status(ERROR_VALIDATION).send({ message: 'Переданы некорректные данные id пользователя' });
     }
     console.log(e);
-    return res.status(ERROR_SERVER_FAIL).json({ message: 'Произошла ошибка' });
+    return res.status(ERROR_VALIDATION).json({ message: 'Произошла ошибка' });
   }
 };
 

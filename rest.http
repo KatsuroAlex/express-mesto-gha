@@ -2,16 +2,16 @@
 GET http://localhost:3000/users
 
 ### возвращает пользователя по ID
-GET http://localhost:3000/users/638a18e5564e527e4b5bd599
+GET http://localhost:3000/users/638a18e5564e527e4b5bd598
 
 ### Создает пользователя
 POST http://localhost:3000/users
 Content-Type: application/json
 
 {
-  "name": "Твцawdawdфв11",
-  "about": "Информация о себе111123",
-  "avatar": "https://plus.unsplash.com/premium_photo-1661342419580-436f25048a51?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwyNXx8fGVufDB8fHx8&auto=format&fit=crop&w=700&q=60"
+  "name": "test",
+  "about": "about",
+  "avatar": "https://ya.ru/av.bmp"
 }
 
 ### Обновить данные пользователя
@@ -19,8 +19,8 @@ PATCH http://localhost:3000/users/me
 Content-Type: application/json
 
 {
-  "name": "Твцawdawdфв0000123",
-  "about": "Информация о себе00000123"
+  "name": "Твцawdawdфв0000123544",
+  "about": "Информация о себе00000123544"
 }
 
 ### Обновить Аватар пользователя
@@ -28,7 +28,7 @@ PATCH http://localhost:3000/users/me/avatar
 Content-Type: application/json
 
 {
-  "avatar": "https://images.unsplash.com/photo-1670238115034-cf9936ae00ba?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwyOXx8fGVufDB8fHx8&auto=format&fit=crop&w=700&q=60"
+  "avatar": "https://images.unsplash.com/photo-1670431757843-e8fd3f24490f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw0fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=700&q=60"
 }
 
 
@@ -44,18 +44,18 @@ POST http://localhost:3000/cards
 Content-Type: application/json
 
 {
-  "name": "1234",
+  "name": "123465666123",
   "link": "https://images.unsplash.com/photo-1670070633288-72a46e449866?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwzfHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=900&q=60",
   "owner": "638a18e5564e527e4b5bd599"
 }
 
 ### удаляет карточку по id
-DELETE http://localhost:3000/cards/638e4ce3bdb037be0f6d64d5
+DELETE http://localhost:3000/cards/63923378a669a3d2319ef3cd
 
 ### поставить лайк на карточку
-PUT http://localhost:3000/cards/638b584d6dd679aae9c6f5a3/likes
+PUT http://localhost:3000/cards/6392338ea669a3d2319ef3d3/likes
 
 ### убрать лайк с карточки
-DELETE http://localhost:3000/cards/638b584d6dd679aae9c6f5a3/likes
+DELETE http://localhost:3000/cards/6392338ea669a3d2319ef3d3/likes
 
 
