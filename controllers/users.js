@@ -89,6 +89,10 @@ const updateUser = async (req, res) => {
       console.error(e);
       return res.status(ERROR_VALIDATION).send({ message: 'Переданы некорректные данные при обновлении профиля' });
     }
+    if (e.name === 'CastError') {
+      console.error(e);
+      return res.status(ERROR_VALIDATION).send({ message: 'Переданы некорректные данные id пользователя' });
+    }
     console.log(e);
     return res.status(ERROR_SERVER_FAIL).json({ message: 'Произошла ошибка' });
   }
