@@ -18,9 +18,10 @@ app.use((req, res, next) => {
 });
 
 /// основные роуты
-app.use('*', (req, res) => res.status(404).send({ message: 'Указан неправильный путь' }));
 app.use('/users', require('./routes/users'));
 app.use('/cards', require('./routes/cards'));
+
+app.use('*', (req, res) => res.status(404).send({ message: 'Указан неправильный путь' }));
 
 // подключаемся к серверу mongo
 mongoose.set('strictQuery', true);
