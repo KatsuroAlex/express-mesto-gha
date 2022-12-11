@@ -7,6 +7,7 @@ const {
   USER_CREATED,
 } = require('./constants');
 
+
 const createUser = async (req, res) => {
   try {
     const { name, about, avatar } = req.body;

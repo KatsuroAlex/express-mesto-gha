@@ -6,6 +6,7 @@ const {
   SUCCESS,
 } = require('./constants');
 
+
 const getCards = async (req, res) => {
   try {
     const cards = await Card.find({});
@@ -60,21 +61,29 @@ const deleteCard = async (req, res) => {
   try {
     const id = req.params.cardId;
     const card = await Card.findById(id);
+    console.log(card);
+
     if (String(card.owner) === String(req.user._id)) {
       card.remove();
       return res.send({ message: 'Пост удален' });
     }
-    if (card === null) {
-      return res.status(ERROR_NOT_FOUND).json({ message: 'Карточка с указанным id не найдена' });
+    if (String(card.name) === null) {
+      return res.status(ERROR_VALIDATION).json({ message: 'Карточка с указанным id не найдена' });
     }
-    return res.send({ message: 'Карточка с указанным id не найдена' });
+
+    // return res.send({ message: 'Карточка с указанным id не найдена' });
   } catch (e) {
     if (e.name === 'CastError') {
       console.error(e);
-      return res.status(ERROR_NOT_FOUND).send({ message: 'Переданы некорректные данные id карточки' });
+      return res.status(ERROR_VALIDATION).send({ message: 'Переданы некорректные данные id карточки' });
     }
+    if (e.name === 'ValidationError' || e.name === 'SomeError') {
+      console.error(e);
+      return res.status(ERROR_VALIDATION).send({ message: 'Переданы некорректные данные при создании карточки' });
+    }
+
     console.error(e);
-    return res.status(ERROR_SERVER_FAIL).json({ message: 'Произошла ошибка' });
+    return res.status(ERROR_NOT_FOUND).json({ message: 'Некорректный id карточки' });
   }
 };
 
@@ -102,7 +111,7 @@ const likeCard = async (req, res) => {
       { new: true },
     );
     if (card === null) {
-      return res.status(ERROR_VALIDATION).json({ message: 'Карточка с указанным id не найдена' });
+      return res.status(ERROR_NOT_FOUND).json({ message: 'Карточка с указанным id не найдена' });
     }
     return res.send(card);
   } catch (e) {
@@ -111,7 +120,7 @@ const likeCard = async (req, res) => {
       return res.status(ERROR_VALIDATION).send({ message: 'Переданы некорректные данные для постановки/снятии лайка' });
     }
     if (e.name === 'CastError') {
-      return res.status(ERROR_NOT_FOUND).send({ message: 'Переданы некорректные данные id карточки' });
+      return res.status(ERROR_VALIDATION).send({ message: 'Переданы некорректные данные id карточки' });
     }
     console.error(e);
     return res.status(ERROR_SERVER_FAIL).json({ message: 'Произошла ошибка' });
@@ -127,7 +136,7 @@ const dislikeCard = async (req, res) => {
       { new: true },
     );
     if (card === null) {
-      return res.status(ERROR_VALIDATION).json({ message: 'Карточка с указанным id не найдена' });
+      return res.status(ERROR_NOT_FOUND).json({ message: 'Карточка с указанным id не найдена' });
     }
     return res.send(card);
   } catch (e) {
@@ -136,7 +145,7 @@ const dislikeCard = async (req, res) => {
       return res.status(ERROR_VALIDATION).send({ message: 'Переданы некорректные данные для постановки/снятии лайка' });
     }
     if (e.name === 'CastError') {
-      return res.status(ERROR_NOT_FOUND).send({ message: 'Переданы некорректные данные id карточки' });
+      return res.status(ERROR_VALIDATION).send({ message: 'Переданы некорректные данные id карточки' });
     }
     console.error(e);
     return res.status(ERROR_VALIDATION).json({ message: 'Произошла ошибка' });
