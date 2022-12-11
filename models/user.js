@@ -15,7 +15,6 @@ const userSchema = new mongoose.Schema({
   },
   avatar: {
     type: String, // тип — String
-    ref: 'Avatar',
     required: true,
   },
 });

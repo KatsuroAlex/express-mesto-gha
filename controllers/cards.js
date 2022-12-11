@@ -17,7 +17,7 @@ const createCard = async (req, res) => {
     console.log(req.user._id); // _id станет доступен
     return res.status(200).json(card);
   } catch (e) {
-    if (e.name === 'ValidationError' || e.name === 'SomeError') {
+    if (e.name === 'SomeError') {
       console.error(e);
       return res.status(400).send({ message: 'Переданы некорректные данные при создании карточки' });
     }
@@ -30,16 +30,16 @@ const deleteCard = async (req, res) => {
   try {
     const id = req.params.cardId;
     const card = await Card.findById(id).orFail(new Error('NotFound'));
-    if (String(card.owner) === String(req.user._id)) {
-      card.remove();
-    }
+    // if (String(card.owner) === String(req.user._id)) {
+    // }
+    card.remove();
     return res.send({ message: 'Пост удален' });
   } catch (e) {
     if (e.name === 'CastError') {
       console.error(e);
       return res.status(400).send({ message: 'Переданы некорректные данные id карточки' });
     }
-    if (e.name === 'ValidationError' || e.name === 'SomeError') {
+    if (e.name === 'SomeError') {
       console.error(e);
       return res.status(400).send({ message: 'Переданы некорректные данные при создании карточки' });
     }
@@ -62,7 +62,7 @@ const likeCard = async (req, res) => {
     }
     return res.send(card);
   } catch (e) {
-    if (e.name === 'ValidationError' || e.name === 'SomeError') {
+    if (e.name === 'SomeError') {
       console.error(e);
       return res.status(400).send({ message: 'Переданы некорректные данные для постановки/снятии лайка' });
     }
