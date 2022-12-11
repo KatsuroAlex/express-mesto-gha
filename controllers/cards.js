@@ -45,7 +45,7 @@ const deleteCard = async (req, res) => {
     }
 
     console.error(e);
-    return res.status(500).json({ message: 'Некорректный id карточки' });
+    return res.status(404).json({ message: 'Некорректный id карточки' });
   }
 };
 
