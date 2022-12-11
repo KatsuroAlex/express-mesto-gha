@@ -17,7 +17,6 @@ app.use((req, res, next) => {
   next();
 });
 
-
 /// основные роуты
 app.use('/users', require('./routes/users'));
 app.use('/cards', require('./routes/cards'));

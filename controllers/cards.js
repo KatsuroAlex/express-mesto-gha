@@ -60,17 +60,14 @@ const createCard = async (req, res) => {
 const deleteCard = async (req, res) => {
   try {
     const id = req.params.cardId;
-    const card = await Card.findById(id);
-    console.log(card);
-
+    const card = await Card.findById(id).orFail(new Error('NotFound'));
     if (String(card.owner) === String(req.user._id)) {
       card.remove();
       return res.send({ message: 'Пост удален' });
     }
-    if (String(card.name) === null) {
-      return res.status(ERROR_VALIDATION).json({ message: 'Карточка с указанным id не найдена' });
-    }
-
+    // if (String(card.name) === null) {
+    //   return res.status(ERROR_VALIDATION).json({ message: 'Карточка с указанным' });
+    // }
     // return res.send({ message: 'Карточка с указанным id не найдена' });
   } catch (e) {
     if (e.name === 'CastError') {

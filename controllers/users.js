@@ -7,7 +7,6 @@ const {
   USER_CREATED,
 } = require('./constants');
 
-
 const createUser = async (req, res) => {
   try {
     const { name, about, avatar } = req.body;
@@ -99,7 +98,7 @@ const updateUser = async (req, res) => {
       console.error(e);
       return res.status(ERROR_VALIDATION).send({ message: 'Переданы некорректные данные при обновлении профиля' });
     }
-    if (e.name === 'CastError') {
+    if (e.name === 'CastError' || e.name === 'TypeError') {
       console.error(e);
       return res.status(ERROR_VALIDATION).send({ message: 'Переданы некорректные данные id пользователя' });
     }
