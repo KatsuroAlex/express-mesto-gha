@@ -4,13 +4,15 @@ GET http://localhost:3000/users
 ### возвращает пользователя по ID
 GET http://localhost:3000/users/638a18e5564e527e4b5bd598
 
+
+  # "name": "",
 ### Создает пользователя
 POST http://localhost:3000/users
 Content-Type: application/json
 
 {
-  "name": "test",
-  "about": "about",
+
+  "about": "awdawdawd",
   "avatar": "https://ya.ru/av.bmp"
 }
 
@@ -19,8 +21,8 @@ PATCH http://localhost:3000/users/me
 Content-Type: application/json
 
 {
-  "name": "Твцawdawdфв0000123544",
-  "about": "Информация о себе00000123544"
+  "name": "Дима",
+  "about": "Программист ПИТОН"
 }
 
 ### Обновить Аватар пользователя
@@ -44,13 +46,13 @@ POST http://localhost:3000/cards
 Content-Type: application/json
 
 {
-  "name": "123465666123",
+  "name": "123465666123вфцфвцфвцвфцв",
   "link": "https://images.unsplash.com/photo-1670070633288-72a46e449866?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwzfHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=900&q=60",
   "owner": "638a18e5564e527e4b5bd599"
 }
 
 ### удаляет карточку по id
-DELETE http://localhost:3000/cards/63923378a669a3d2319ef3cd
+DELETE http://localhost:3000/cards/6392338ea669a3d2319ef3d3
 
 ### поставить лайк на карточку
 PUT http://localhost:3000/cards/6392338ea669a3d2319ef3d3/likes

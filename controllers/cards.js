@@ -71,7 +71,7 @@ const deleteCard = async (req, res) => {
   } catch (e) {
     if (e.name === 'CastError') {
       console.error(e);
-      return res.status(ERROR_VALIDATION).send({ message: 'Переданы некорректные данные id карточки' });
+      return res.status(ERROR_NOT_FOUND).send({ message: 'Переданы некорректные данные id карточки' });
     }
     console.error(e);
     return res.status(ERROR_SERVER_FAIL).json({ message: 'Произошла ошибка' });
@@ -102,7 +102,7 @@ const likeCard = async (req, res) => {
       { new: true },
     );
     if (card === null) {
-      return res.status(ERROR_NOT_FOUND).json({ message: 'Карточка с указанным id не найдена' });
+      return res.status(ERROR_VALIDATION).json({ message: 'Карточка с указанным id не найдена' });
     }
     return res.send(card);
   } catch (e) {
@@ -127,7 +127,7 @@ const dislikeCard = async (req, res) => {
       { new: true },
     );
     if (card === null) {
-      return res.status(ERROR_NOT_FOUND).json({ message: 'Карточка с указанным id не найдена' });
+      return res.status(ERROR_VALIDATION).json({ message: 'Карточка с указанным id не найдена' });
     }
     return res.send(card);
   } catch (e) {

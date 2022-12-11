@@ -10,10 +10,19 @@ const {
 const createUser = async (req, res) => {
   try {
     const { name, about, avatar } = req.body;
+
     const user = await User.create({ name, about, avatar });
+
+    if (user.name === null || user.about === null) {
+      return res.status(ERROR_VALIDATION).send({ message: '1' });
+    }
     return res.status(USER_CREATED).json(user);
   } catch (e) {
     if (e.name === 'ValidationError' || e.name === 'SomeError') {
+      console.error(e);
+      return res.status(ERROR_VALIDATION).send({ message: 'Переданы некорректные данные при создании карточки' });
+    }
+    if (e.name === 'CastError' || e.name === 'TypeError') {
       console.error(e);
       return res.status(ERROR_VALIDATION).send({ message: 'Переданы некорректные данные при создании карточки' });
     }
