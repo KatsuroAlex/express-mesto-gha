@@ -86,7 +86,7 @@ const getUser = async (req, res) => {
 const updateUser = async (req, res) => {
   try {
     const updates = req.body;
-    const options = { new: true };
+    const options = { new: true, runValidators: true };
     const result = await User.findByIdAndUpdate(req.user._id, updates, options);
     console.log(req.user);
     if (result === null) {

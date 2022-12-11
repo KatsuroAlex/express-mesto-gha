@@ -6,7 +6,6 @@ const {
   SUCCESS,
 } = require('./constants');
 
-
 const getCards = async (req, res) => {
   try {
     const cards = await Card.find({});
@@ -63,8 +62,8 @@ const deleteCard = async (req, res) => {
     const card = await Card.findById(id).orFail(new Error('NotFound'));
     if (String(card.owner) === String(req.user._id)) {
       card.remove();
-      return res.send({ message: 'Пост удален' });
     }
+    return res.send({ message: 'Пост удален' });
     // if (String(card.name) === null) {
     //   return res.status(ERROR_VALIDATION).json({ message: 'Карточка с указанным' });
     // }
