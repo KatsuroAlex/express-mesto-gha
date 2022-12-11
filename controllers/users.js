@@ -7,29 +7,44 @@ const {
   USER_CREATED,
 } = require('./constants');
 
+
+
+
+
+
 const createUser = async (req, res) => {
   try {
-    const { name, about, avatar } = req.body;
+    // const { name, about, avatar } = req.body;
 
-    const user = await User.create({ name, about, avatar });
+    // const user = await User.create({ name, about, avatar });
 
-    // if (user.name === null || user.about === null) {
-    //   return res.status(ERROR_VALIDATION).send({ message: '1' });
+    const user = await User.create(req.body);
+
+    // if ((!user.name) || (!user.about)) {
+    //   return res.status(400).send({ message: '1' });
     // }
-    return res.status(USER_CREATED).json(user);
+    return res.status(201).json(user);
   } catch (e) {
     if (e.name === 'ValidationError' || e.name === 'SomeError') {
       console.log(e);
-      return res.status(ERROR_VALIDATION).send({ message: 'Переданы некорректные данные при создании пользователя' });
+      return res.status(400).send({ message: 'Переданы некорректные данные при создании пользователя' });
     }
     if (e.name === 'CastError' || e.name === 'TypeError') {
       console.error(e);
-      return res.status(ERROR_VALIDATION).send({ message: 'Переданы некорректные данные при создании пользователя' });
+      return res.status(400).send({ message: 'Переданы некорректные данные при создании пользователя' });
     }
     console.error(e);
-    return res.status(ERROR_VALIDATION).json({ message: 'Произошла ошибка' });
+    return res.status(500).json({ message: 'Произошла ошибка' });
   }
 };
+
+
+
+
+
+
+
+
 
 const getUsers = async (req, res) => {
   try {
