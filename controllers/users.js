@@ -13,18 +13,18 @@ const createUser = async (req, res) => {
 
     const user = await User.create({ name, about, avatar });
 
-    if (user.name === null || user.about === null) {
-      return res.status(ERROR_VALIDATION).send({ message: '1' });
-    }
+    // if (user.name === null || user.about === null) {
+    //   return res.status(ERROR_VALIDATION).send({ message: '1' });
+    // }
     return res.status(USER_CREATED).json(user);
   } catch (e) {
     if (e.name === 'ValidationError' || e.name === 'SomeError') {
-      console.error(e);
-      return res.status(ERROR_VALIDATION).send({ message: 'Переданы некорректные данные при создании карточки' });
+      console.log(e);
+      return res.status(ERROR_VALIDATION).send({ message: 'Переданы некорректные данные при создании пользователя' });
     }
     if (e.name === 'CastError' || e.name === 'TypeError') {
       console.error(e);
-      return res.status(ERROR_VALIDATION).send({ message: 'Переданы некорректные данные при создании карточки' });
+      return res.status(ERROR_VALIDATION).send({ message: 'Переданы некорректные данные при создании пользователя' });
     }
     console.error(e);
     return res.status(ERROR_VALIDATION).json({ message: 'Произошла ошибка' });
@@ -40,19 +40,6 @@ const getUsers = async (req, res) => {
     return res.status(ERROR_NOT_FOUND).json({ message: 'Произошла ошибка' });
   }
 };
-
-// const getUsers = async (req, res) => {
-//   try {
-//     const users = await User.find({});
-//     return res.status(200).send(users.map((user) => {
-//       const { name, about, avatar, _id } = user;
-//       return { _id, name, about, avatar };
-//     }));
-//   } catch (e) {
-//     console.log(e);
-//     return res.status(400).json({ message: 'Произошла ошибка' });
-//   }
-// };
 
 const getUser = async (req, res) => {
   try {
