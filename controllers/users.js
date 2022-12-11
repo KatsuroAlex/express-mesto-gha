@@ -4,13 +4,7 @@ const {
   ERROR_NOT_FOUND,
   ERROR_SERVER_FAIL,
   SUCCESS,
-  USER_CREATED,
 } = require('./constants');
-
-
-
-
-
 
 const createUser = async (req, res) => {
   try {
@@ -37,14 +31,6 @@ const createUser = async (req, res) => {
     return res.status(500).json({ message: 'Произошла ошибка' });
   }
 };
-
-
-
-
-
-
-
-
 
 const getUsers = async (req, res) => {
   try {
