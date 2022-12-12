@@ -8,6 +8,11 @@ const app = express();
 // // подключаем мидлвары, роуты и тд
 app.use(bodyParser.json());
 
+app.use((req, res, next) => {
+  req.user = { _id: '638a18e5564e527e4b5bd599' }; // вставьте сюда _id созданного в предыдущем пункте пользователя
+  next();
+});
+
 /// основные роуты
 app.use('/users', require('./routes/users'));
 app.use('/cards', require('./routes/cards'));
@@ -24,9 +29,4 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
   app.listen(PORT, () => {
     console.log(`App listening on port ${PORT}!`);
   });
-});
-
-app.use((req, res, next) => {
-  req.user = { _id: '638a18e5564e527e4b5bd599' }; // вставьте сюда _id созданного в предыдущем пункте пользователя
-  next();
 });
