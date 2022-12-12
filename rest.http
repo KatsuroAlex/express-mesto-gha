@@ -20,8 +20,8 @@ PATCH http://localhost:3000/users/me
 Content-Type: application/json
 
 {
-  "name": "12323",
-  "about": "2"
+  "name": "1234",
+  "about": "234"
 }
 
 ### Обновить Аватар пользователя
@@ -45,8 +45,8 @@ POST http://localhost:3000/cards
 Content-Type: application/json
 
 {
-  "name": "123465666123вфцфвцфвцвфцв",
-  "link": "https://images.unsplash.com/photo-1670070633288-72a46e449866?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwzfHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=900&q=60",
+  "name": "1",
+  "link": "",
   "owner": "638a18e5564e527e4b5bd599"
 }
 
@@ -54,9 +54,9 @@ Content-Type: application/json
 DELETE http://localhost:3000/cards/6391b7291c512bd4c2de3ef1
 
 ### поставить лайк на карточку
-PUT http://localhost:3000/cards/6392338ea669a3d2319ef3d2/likes
+PUT http://localhost:3000/cards/639764b55bea54cede220346/likes
 
 ### убрать лайк с карточки
-DELETE http://localhost:3000/cards/6392338ea669a3d2319ef3d3/likes
+DELETE http://localhost:3000/cards/639764b55bea54cede220346/likes
 
 

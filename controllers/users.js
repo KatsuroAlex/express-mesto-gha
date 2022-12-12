@@ -17,10 +17,6 @@ const createUser = async (req, res) => {
       console.log(e);
       return res.status(ERROR_VALIDATION).send({ message: 'Переданы некорректные данные при создании пользователя' });
     }
-    // if (e.name === 'CastError') {
-    //   console.error(e);    //   return res.status(400).send({ message: '' });
-
-    // }
     console.error(e);
     return res.status(ERROR_SERVER).json({ message: 'Произошла ошибка' });
   }

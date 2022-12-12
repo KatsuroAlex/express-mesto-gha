@@ -1,23 +1,25 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
+// const bodyParser = require('body-parser');
+const router = require('./routes');
 
 const { PORT = 3000 } = process.env;
 const app = express();
 
 // // подключаем мидлвары, роуты и тд
-app.use(bodyParser.json());
+app.use(express.json());
 
-app.use((req, res, next) => {
-  req.user = { _id: '638a18e5564e527e4b5bd599' }; // вставьте сюда _id созданного в предыдущем пункте пользователя
-  next();
-});
+// app.use((req, res, next) => {
+//   req.user = { _id: '638a18e5564e527e4b5bd599' };
+//   next();
+// });
 
 /// основные роуты
-app.use('/users', require('./routes/users'));
-app.use('/cards', require('./routes/cards'));
+// app.use('/users', require('./routes/users'));
+// app.use('/cards', require('./routes/cards'));
+app.use(router);
 
-app.use('*', (req, res) => res.status(404).send({ message: 'Указан неправильный путь' }));
+// app.use('*', (req, res) => res.status(404).send({ message: 'Указан неправильный путь' }));
 
 // подключаемся к серверу mongo
 mongoose.set('strictQuery', true);

@@ -37,8 +37,6 @@ const deleteCard = async (req, res) => {
   try {
     const id = req.params.cardId;
     const card = await Card.findById(id).orFail(new Error('NotFound'));
-    // if (String(card.owner) === String(req.user._id)) {
-    // }
     card.remove();
     return res.send({ message: 'Пост удален' });
   } catch (e) {
