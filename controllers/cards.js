@@ -1,12 +1,19 @@
 const Card = require('../models/card');
 
+const {
+  ERROR_VALIDATION,
+  ERROR_NOT_FOUND,
+  ERROR_SERVER,
+  SUCCESS,
+} = require('./constants');
+
 const getCards = async (req, res) => {
   try {
-    const cards = await Card.find({});
-    return res.status(200).json(cards);
+    const cards = await Card.find({}).populate(['owner', 'likes']);
+    return res.status(SUCCESS).send(cards);
   } catch (e) {
     console.error(e);
-    return res.status(400).json({ message: 'Произошла ошибка' });
+    return res.status(ERROR_VALIDATION).json({ message: 'Переданы некорректные данные при создании карточки' });
   }
 };
 
@@ -15,14 +22,14 @@ const createCard = async (req, res) => {
     const { name, link } = req.body;
     const card = await Card.create({ name, link, owner: req.user._id });
     console.log(req.user._id); // _id станет доступен
-    return res.status(200).json(card);
+    return res.status(SUCCESS).json(card);
   } catch (e) {
     if (e.name === 'SomeError') {
       console.error(e);
-      return res.status(400).send({ message: 'Переданы некорректные данные при создании карточки' });
+      return res.status(ERROR_VALIDATION).send({ message: 'Переданы некорректные данные при создании карточки' });
     }
     console.error(e);
-    return res.status(500).json({ message: 'Произошла ошибка' });
+    return res.status(ERROR_SERVER).json({ message: 'Произошла ошибка' });
   }
 };
 
@@ -37,15 +44,15 @@ const deleteCard = async (req, res) => {
   } catch (e) {
     if (e.name === 'CastError') {
       console.error(e);
-      return res.status(400).send({ message: 'Переданы некорректные данные id карточки' });
+      return res.status(ERROR_VALIDATION).send({ message: 'Переданы некорректные данные id карточки' });
     }
     if (e.name === 'SomeError') {
       console.error(e);
-      return res.status(400).send({ message: 'Переданы некорректные данные при создании карточки' });
+      return res.status(ERROR_VALIDATION).send({ message: 'Переданы некорректные данные при создании карточки' });
     }
 
     console.error(e);
-    return res.status(404).json({ message: 'Некорректный id карточки' });
+    return res.status(ERROR_NOT_FOUND).json({ message: 'Некорректный id карточки' });
   }
 };
 
@@ -57,20 +64,21 @@ const likeCard = async (req, res) => {
       { $addToSet: { likes: req.user._id } },
       { new: true },
     );
+    card.populate(['owner', 'likes']);
     if (card === null) {
-      return res.status(404).json({ message: 'Карточка с указанным id не найдена' });
+      return res.status(ERROR_NOT_FOUND).json({ message: 'Карточка с указанным id не найдена' });
     }
     return res.send(card);
   } catch (e) {
     if (e.name === 'SomeError') {
       console.error(e);
-      return res.status(400).send({ message: 'Переданы некорректные данные для постановки/снятии лайка' });
+      return res.status(ERROR_VALIDATION).send({ message: 'Переданы некорректные данные для постановки/снятии лайка' });
     }
     if (e.name === 'CastError') {
-      return res.status(400).send({ message: 'Переданы некорректные данные id карточки' });
+      return res.status(ERROR_VALIDATION).send({ message: 'Переданы некорректные данные id карточки' });
     }
     console.error(e);
-    return res.status(500).json({ message: 'Произошла ошибка' });
+    return res.status(ERROR_SERVER).json({ message: 'Произошла ошибка' });
   }
 };
 
@@ -82,20 +90,21 @@ const dislikeCard = async (req, res) => {
       { $pull: { likes: req.user._id } },
       { new: true },
     );
+    card.populate(['owner', 'likes']);
     if (card === null) {
-      return res.status(404).json({ message: 'Карточка с указанным id не найдена' });
+      return res.status(ERROR_NOT_FOUND).json({ message: 'Карточка с указанным id не найдена' });
     }
     return res.send(card);
   } catch (e) {
     if (e.name === 'ValidationError' || e.name === 'SomeError') {
       console.error(e);
-      return res.status(400).send({ message: 'Переданы некорректные данные для постановки/снятии лайка' });
+      return res.status(ERROR_VALIDATION).send({ message: 'Переданы некорректные данные для постановки/снятии лайка' });
     }
     if (e.name === 'CastError') {
-      return res.status(400).send({ message: 'Переданы некорректные данные id карточки' });
+      return res.status(ERROR_VALIDATION).send({ message: 'Переданы некорректные данные id карточки' });
     }
     console.error(e);
-    return res.status(500).json({ message: 'Произошла ошибка' });
+    return res.status(ERROR_SERVER).json({ message: 'Произошла ошибка' });
   }
 };
 

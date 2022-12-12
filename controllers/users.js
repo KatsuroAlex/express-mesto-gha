@@ -1,30 +1,38 @@
 const User = require('../models/user');
 
+const {
+  ERROR_VALIDATION,
+  ERROR_NOT_FOUND,
+  ERROR_SERVER,
+  SUCCESS,
+  USER_CREATED,
+} = require('./constants');
+
 const createUser = async (req, res) => {
   try {
     const user = await User.create(req.body);
-    return res.status(201).json(user);
+    return res.status(USER_CREATED).json(user);
   } catch (e) {
     if (e.name === 'ValidationError') {
       console.log(e);
-      return res.status(400).send({ message: 'Переданы некорректные данные при создании пользователя' });
+      return res.status(ERROR_VALIDATION).send({ message: 'Переданы некорректные данные при создании пользователя' });
     }
     // if (e.name === 'CastError') {
     //   console.error(e);    //   return res.status(400).send({ message: '' });
 
     // }
     console.error(e);
-    return res.status(500).json({ message: 'Произошла ошибка' });
+    return res.status(ERROR_SERVER).json({ message: 'Произошла ошибка' });
   }
 };
 
 const getUsers = async (req, res) => {
   try {
     const users = await User.find({});
-    return res.status(200).json({ users });
+    return res.status(SUCCESS).json({ users });
   } catch (e) {
     console.log(e);
-    return res.status(500).json({ message: 'Произошла ошибка' });
+    return res.status(ERROR_SERVER).json({ message: 'Произошла ошибка' });
   }
 };
 
@@ -33,16 +41,16 @@ const getUser = async (req, res) => {
     const { id } = req.params; // Достаем id через деструктуризацию
     const user = await User.findById(id);
     if (user === null) {
-      return res.status(404).json({ message: 'Пользователь по указанному id не найден' });
+      return res.status(ERROR_NOT_FOUND).json({ message: 'Пользователь по указанному id не найден' });
     }
-    return res.status(200).json(user);
+    return res.status(SUCCESS).json(user);
   } catch (e) {
     if (e.name === 'CastError') {
       console.error(e);
-      return res.status(400).send({ message: 'Переданы некорректные данные id пользователя' });
+      return res.status(ERROR_VALIDATION).send({ message: 'Переданы некорректные данные id пользователя' });
     }
     console.log(e);
-    return res.status(500).json({ message: 'Произошла ошибка' });
+    return res.status(ERROR_SERVER).json({ message: 'Произошла ошибка' });
   }
 };
 
@@ -53,20 +61,20 @@ const updateUser = async (req, res) => {
     const result = await User.findByIdAndUpdate(req.user._id, updates, options);
     console.log(req.user);
     if (result === null) {
-      return res.status(400).json({ message: 'Пользователь с указанным id не найден' });
+      return res.status(ERROR_VALIDATION).json({ message: 'Пользователь с указанным id не найден' });
     }
-    return res.status(200).json(result);
+    return res.status(SUCCESS).json(result);
   } catch (e) {
     if (e.name === 'ValidationError') {
       console.error(e);
-      return res.status(400).send({ message: 'Переданы некорректные данные при обновлении профиля' });
+      return res.status(ERROR_VALIDATION).send({ message: 'Переданы некорректные данные при обновлении профиля' });
     }
     if (e.name === 'CastError') {
       console.error(e);
-      return res.status(400).send({ message: 'Переданы некорректные данные id пользователя' });
+      return res.status(ERROR_VALIDATION).send({ message: 'Переданы некорректные данные id пользователя' });
     }
     console.log(e);
-    return res.status(500).json({ message: 'Произошла ошибка' });
+    return res.status(ERROR_SERVER).json({ message: 'Произошла ошибка' });
   }
 };
 
@@ -75,16 +83,16 @@ const updateAvatar = async (req, res) => {
     const options = { new: true };
     const user = await User.findByIdAndUpdate(req.user, req.body, options);
     if (user === null) {
-      return res.status(400).json({ message: 'Пользователь с указанным id не найден' });
+      return res.status(ERROR_VALIDATION).json({ message: 'Пользователь с указанным id не найден' });
     }
-    return res.status(200).json({ user });
+    return res.status(SUCCESS).json({ user });
   } catch (e) {
     if (e.name === 'ValidationError') {
       console.error(e);
-      return res.status(400).send({ message: 'Переданы некорректные данные при обновлении аватара' });
+      return res.status(ERROR_VALIDATION).send({ message: 'Переданы некорректные данные при обновлении аватара' });
     }
     console.log(e);
-    return res.status(500).json({ message: 'Произошла ошибка' });
+    return res.status(ERROR_SERVER).json({ message: 'Произошла ошибка' });
   }
 };
 
