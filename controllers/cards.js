@@ -24,7 +24,7 @@ const createCard = async (req, res) => {
     console.log(req.user._id); // _id станет доступен
     return res.status(SUCCESS).json(card);
   } catch (e) {
-    if (e.name === 'SomeError') {
+    if (e.name === 'SomeError' || e.name === 'ValidationError') {
       console.error(e);
       return res.status(ERROR_VALIDATION).send({ message: 'Переданы некорректные данные при создании карточки' });
     }
@@ -63,8 +63,7 @@ const likeCard = async (req, res) => {
       id,
       { $addToSet: { likes: req.user._id } },
       { new: true },
-    );
-    card.populate(['owner', 'likes']);
+    ).populate(['owner', 'likes']);
     if (card === null) {
       return res.status(ERROR_NOT_FOUND).json({ message: 'Карточка с указанным id не найдена' });
     }
@@ -89,8 +88,7 @@ const dislikeCard = async (req, res) => {
       id,
       { $pull: { likes: req.user._id } },
       { new: true },
-    );
-    card.populate(['owner', 'likes']);
+    ).populate(['owner', 'likes']);
     if (card === null) {
       return res.status(ERROR_NOT_FOUND).json({ message: 'Карточка с указанным id не найдена' });
     }
