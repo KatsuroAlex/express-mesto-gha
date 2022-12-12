@@ -17,7 +17,6 @@ app.use(express.json());
 /// основные роуты
 // app.use('/users', require('./routes/users'));
 // app.use('/cards', require('./routes/cards'));
-app.use(router);
 
 // app.use('*', (req, res) => res.status(404).send({ message: 'Указан неправильный путь' }));
 
@@ -32,3 +31,5 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
     console.log(`App listening on port ${PORT}!`);
   });
 });
+
+app.use(router);

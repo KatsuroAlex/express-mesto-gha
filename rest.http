@@ -20,8 +20,8 @@ PATCH http://localhost:3000/users/me
 Content-Type: application/json
 
 {
-  "name": "1234",
-  "about": "234"
+  "name": "Обновленное имя",
+  "about": "Обновленная информация о себе"
 }
 
 ### Обновить Аватар пользователя
