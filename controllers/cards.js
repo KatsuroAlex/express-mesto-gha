@@ -5,7 +5,7 @@ const {
   ERROR_NOT_FOUND,
   ERROR_SERVER,
   SUCCESS,
-} = require('./constants');
+} = require('../errors/constants');
 
 const getCards = async (req, res) => {
   try {
@@ -36,9 +36,9 @@ const createCard = async (req, res) => {
 const deleteCard = async (req, res) => {
   try {
     const id = req.params.cardId;
-    const card = await Card.findById(id);
-    return card.remove();
-    // return res.send({ message: 'Пост удален' });
+    await Card.findByIdAndRemove(id);
+    // card.remove();
+    return res.send({ message: 'Пост удален' });
   } catch (e) {
     if (e.name === 'CastError') {
       console.error(e);

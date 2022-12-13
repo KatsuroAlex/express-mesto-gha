@@ -6,7 +6,7 @@ const {
   ERROR_SERVER,
   SUCCESS,
   USER_CREATED,
-} = require('./constants');
+} = require('../errors/constants');
 
 const createUser = async (req, res) => {
   try {
