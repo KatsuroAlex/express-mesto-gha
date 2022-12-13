@@ -24,7 +24,7 @@ const createCard = async (req, res) => {
     console.log(req.user._id); // _id станет доступен
     return res.status(SUCCESS).json(card);
   } catch (e) {
-    if (e.name === 'SomeError' || e.name === 'ValidationError') {
+    if (e.name === 'ValidationError') {
       console.error(e);
       return res.status(ERROR_VALIDATION).send({ message: 'Переданы некорректные данные при создании карточки' });
     }
@@ -36,18 +36,18 @@ const createCard = async (req, res) => {
 const deleteCard = async (req, res) => {
   try {
     const id = req.params.cardId;
-    const card = await Card.findById(id).orFail(new Error('NotFound'));
-    card.remove();
-    return res.send({ message: 'Пост удален' });
+    const card = await Card.findById(id);
+    return card.remove();
+    // return res.send({ message: 'Пост удален' });
   } catch (e) {
     if (e.name === 'CastError') {
       console.error(e);
       return res.status(ERROR_VALIDATION).send({ message: 'Переданы некорректные данные id карточки' });
     }
-    if (e.name === 'SomeError') {
-      console.error(e);
-      return res.status(ERROR_VALIDATION).send({ message: 'Переданы некорректные данные при создании карточки' });
-    }
+    // if (e.name === 'SomeError') {
+    //   console.error(e);
+    //   return res.status(ERROR_VALIDATION).send({ message: 'Переи создании карточки' });
+    // }
 
     console.error(e);
     return res.status(ERROR_NOT_FOUND).json({ message: 'Некорректный id карточки' });
@@ -67,10 +67,10 @@ const likeCard = async (req, res) => {
     }
     return res.send(card);
   } catch (e) {
-    if (e.name === 'SomeError') {
-      console.error(e);
-      return res.status(ERROR_VALIDATION).send({ message: 'Переданы некорректные данные для постановки/снятии лайка' });
-    }
+    // if (e.name === 'SomeError') {
+    //   console.error(e);
+    //   return res.status(ERROR_VALIDATION).send({ message: 'Переданы некоррйка' });
+    // }
     if (e.name === 'CastError') {
       return res.status(ERROR_VALIDATION).send({ message: 'Переданы некорректные данные id карточки' });
     }
@@ -92,10 +92,10 @@ const dislikeCard = async (req, res) => {
     }
     return res.send(card);
   } catch (e) {
-    if (e.name === 'ValidationError' || e.name === 'SomeError') {
-      console.error(e);
-      return res.status(ERROR_VALIDATION).send({ message: 'Переданы некорректные данные для постановки/снятии лайка' });
-    }
+    // if (e.name === 'ValidationError' || e.name === 'SomeError') {
+    //   console.error(e);
+    //   return res.status(ERROR_VALIDATION).send({ message: 'Переданы некорка' });
+    // }
     if (e.name === 'CastError') {
       return res.status(ERROR_VALIDATION).send({ message: 'Переданы некорректные данные id карточки' });
     }
