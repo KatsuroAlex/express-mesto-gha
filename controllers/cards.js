@@ -39,16 +39,17 @@ const deleteCard = async (req, res) => {
     await Card.findByIdAndRemove(id).orFail(new Error('NotFound'));
     return res.send({ message: 'Пост удален' });
   } catch (e) {
+    console.log(e.message);
     if (e.name === 'CastError') {
       console.error(e);
       return res.status(ERROR_VALIDATION).send({ message: 'Переданы некорректные данные id карточки' });
     }
-    if (e.name === 'NotFound') {
+    if (e.message === 'NotFound') {
       console.error(e);
       return res.status(ERROR_NOT_FOUND).send({ message: 'Карточка с указанным id не найдена' });
     }
     console.error(e);
-    return res.status(ERROR_NOT_FOUND).json({ message: 'Некорректный id карточки' });
+    return res.status(ERROR_VALIDATION).json({ message: 'Некорректный id карточки' });
   }
 };
 
