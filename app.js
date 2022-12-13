@@ -1,6 +1,5 @@
 const express = require('express');
 const mongoose = require('mongoose');
-// const bodyParser = require('body-parser');
 const router = require('./routes');
 
 const { PORT = 3000 } = process.env;
@@ -16,8 +15,6 @@ app.use((req, res, next) => {
 
 /// основные роуты
 app.use(router);
-
-app.use('*', (req, res) => res.status(404).send({ message: 'Указан неправильный путь' }));
 
 // подключаемся к серверу mongo
 mongoose.set('strictQuery', true);

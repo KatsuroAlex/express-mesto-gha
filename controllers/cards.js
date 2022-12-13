@@ -36,15 +36,14 @@ const createCard = async (req, res) => {
 const deleteCard = async (req, res) => {
   try {
     const id = req.params.cardId;
-    await Card.findByIdAndRemove(id).orFail(new Error('notFoundCard'));
-    // card.remove();
+    await Card.findByIdAndRemove(id).orFail(new Error('NotFound'));
     return res.send({ message: 'Пост удален' });
   } catch (e) {
     if (e.name === 'CastError') {
       console.error(e);
       return res.status(ERROR_VALIDATION).send({ message: 'Переданы некорректные данные id карточки' });
     }
-    if (e.name === 'notFoundCard') {
+    if (e.name === 'NotFound') {
       console.error(e);
       return res.status(ERROR_NOT_FOUND).send({ message: 'Карточка с указанным id не найдена' });
     }
@@ -66,10 +65,6 @@ const likeCard = async (req, res) => {
     }
     return res.send(card);
   } catch (e) {
-    // if (e.name === 'SomeError') {
-    //   console.error(e);
-    //   return res.status(ERROR_VALIDATION).send({ message: 'Переданы некоррйка' });
-    // }
     if (e.name === 'CastError') {
       return res.status(ERROR_VALIDATION).send({ message: 'Переданы некорректные данные id карточки' });
     }
@@ -91,10 +86,6 @@ const dislikeCard = async (req, res) => {
     }
     return res.send(card);
   } catch (e) {
-    // if (e.name === 'ValidationError' || e.name === 'SomeError') {
-    //   console.error(e);
-    //   return res.status(ERROR_VALIDATION).send({ message: 'Переданы некорка' });
-    // }
     if (e.name === 'CastError') {
       return res.status(ERROR_VALIDATION).send({ message: 'Переданы некорректные данные id карточки' });
     }
