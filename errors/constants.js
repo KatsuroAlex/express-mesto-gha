@@ -1,7 +1,10 @@
 const SUCCESS = 200;
 const USER_CREATED = 201;
 const ERROR_VALIDATION = 400;
+const ERROR_AUTH = 401;
+const ERROR_NO_RIGHTS = 403;
 const ERROR_NOT_FOUND = 404;
+const ERROR_USER_EXIST = 409;
 const ERROR_SERVER = 500;
 
 module.exports = {
@@ -10,4 +13,7 @@ module.exports = {
   ERROR_SERVER,
   SUCCESS,
   USER_CREATED,
+  ERROR_USER_EXIST,
+  ERROR_NO_RIGHTS,
+  ERROR_AUTH,
 };

@@ -4,23 +4,44 @@ GET http://localhost:3000/users
 ### возвращает пользователя по ID
 GET http://localhost:3000/users/638a18e5564e527e4b5bd598
 
-//   "name": "123",
+
 ### Создает пользователя
 POST http://localhost:3000/users
 Content-Type: application/json
 
 {
-
-  "about": "fyhfth",
-  "avatar": "https://ya.ru/av.bmp"
+  "name": "admin",
+  "about": "admin",
+  "avatar": "https://ya.ru/av.bmp",
+  "email": "dimannas@mail.ru",
+  "password": "12w4"
 }
+
+### Найти пользователя
+GET http://localhost:3000/users/me
+Content-Type: Bearer
+
+{
+  "email": "admin",
+  "password": "admin"
+}
+
+### ЛОгин
+POST http://localhost:3000/signIn
+Content-Type: application/json
+
+{
+  "email": "admin",
+  "password": "admin"
+}
+
 
 ### Обновить данные пользователя
 PATCH http://localhost:3000/users/me
 Content-Type: application/json
 
 {
-  "name": "Обновленное имя",
+  "name": "Обновленное имя11",
   "about": "Обновленная информация о себе"
 }
 
@@ -45,13 +66,13 @@ POST http://localhost:3000/cards
 Content-Type: application/json
 
 {
-  "name": "1",
-  "link": "",
+  "name": "1345",
+  "link": "5646456",
   "owner": "638a18e5564e527e4b5bd599"
 }
 
 ### удаляет карточку по id
-DELETE http://localhost:3000/cards/6391b7291c512bd4c2de3ef1
+DELETE http://localhost:3000/cards/63987cbefe12585b6b697050
 
 ### поставить лайк на карточку
 PUT http://localhost:3000/cards/639764b55bea54cede220346/likes
