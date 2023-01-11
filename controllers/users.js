@@ -8,12 +8,7 @@ const ValidationError = require('../errors/validationError');
 const UserExistError = require('../errors/userExistError');
 
 const {
-  ERROR_VALIDATION,
-  ERROR_NOT_FOUND,
-  ERROR_SERVER,
   SUCCESS,
-  USER_CREATED,
-  ERROR_USER_EXIST,
 } = require('../errors/constants');
 
 const createUser = async (req, res, next) => {
@@ -47,15 +42,15 @@ const createUser = async (req, res, next) => {
       } else {
         next(err);
       }
-    // .catch((err) => {
-    //   if (err.name === 'ValidationError') {
-    //     console.log(err);
-    //     return res.status(ERROR_VALIDATION).send({ message: 'Переданы некорректные ' });
-    //   }
-    //   if (err.name === 'MongoError' && err.code === 11000) {
-    //     console.log(err);
-    //     return res.status(ERROR_USER_EXIST).send({ message: 'Пользователь c таким email уже существует' });
-    //   }
+      // .catch((err) => {
+      //   if (err.name === 'ValidationError') {
+      //     console.log(err);
+      //     return res.status(ERROR_VALIDATION).send({ message: 'Переданы некорректные ' });
+      //   }
+      //   if (err.name === 'MongoError' && err.code === 11000) {
+      //     console.log(err);
+      // return res.status(ERROR_USER_EXIST).send({ message: 'Поль c таким email уже существует' });
+      //   }
 
     //   console.error(err);
     //   return res.status(ERROR_SERVER).json({ message: 'Произошла ошибка' });
@@ -122,14 +117,13 @@ const createUser = async (req, res, next) => {
 //     });
 // };
 
-const login = (req, res) => {
+const login = (req, res, next) => {
   const { email, password } = req.body;
   User.findUserByCredentials(email, password)
     .then((user) => {
       const token = jwt.sign(
         { _id: user._id },
         NODE_ENV === 'production' ? JWT_SECRET : 'some-secret-key',
-        // 'some-secret-key',
         { expiresIn: '7d' },
       );
       res
@@ -139,16 +133,17 @@ const login = (req, res) => {
         })
         .send({ token });
     })
-    .catch((err) => res.status(401).send({ message: err.message }));
+    .catch(next);
 };
 
-const getUsers = async (req, res) => {
+const getUsers = async (req, res, next) => {
   try {
     const users = await User.find({});
     return res.status(SUCCESS).json({ users });
-  } catch (e) {
-    console.log(e);
-    return res.status(ERROR_SERVER).json({ message: 'Произошла ошибка' });
+  } catch (err) {
+    return next(err);
+    // console.log(e);
+    // return res.status(ERROR_SERVER).json({ message: 'Произошла ошибка' });
   }
 };
 
@@ -159,59 +154,98 @@ const findUser = (req, res, next) => {
     .catch(next);
 };
 
-const getUser = async (req, res) => {
+const getUser = async (req, res, next) => {
   try {
     const { id } = req.params; // Достаем id через деструктуризацию
-    const user = await User.findById(id);
-    if (user === null) {
-      return res.status(ERROR_NOT_FOUND).json({ message: 'Пользователь по указанному id не найден' });
-    }
+    const user = await User.findById(id).orFail(new NotFoundError('Пользователь по указанному id не найден'));
+    // if (user === null) {
+    //  return res.status(ERROR_NOT_FOUND).json({ message: 'Пользоь по указанному id не найден' });
+    // }
     return res.status(SUCCESS).json(user);
-  } catch (e) {
-    if (e.name === 'CastError') {
-      console.error(e);
-      return res.status(ERROR_VALIDATION).send({ message: 'Переданы некорректные данные id пользователя' });
+  } catch (err) {
+    if (err.name === 'CastError') {
+      next(new ValidationError('Переданы некорректные данные id пользователя'));
+    } else {
+      next(err);
     }
-    console.log(e);
-    return res.status(ERROR_SERVER).json({ message: 'Произошла ошибка' });
+    return next(err);
   }
+  //   catch (e) {
+  //   if (e.name === 'CastError') {
+  //     console.error(e);
+  //     return res.status(ERROR_VALIDATION).send({ message: 'Переданы е данные id пользователя' });
+  //   }
+  //   console.log(e);
+  //   return res.status(ERROR_SERVER).json({ message: 'Произошла ошибка' });
+  // }
 };
 
-const updateUser = async (req, res) => {
+// const updateUser = async (req, res) => {
+//   try {
+//     const updates = req.body;
+//     const options = { new: true, runValidators: true };
+//     const result = await User.findByIdAndUpdate(req.user._id, updates, options);
+//     console.log(req.user);
+//     if (result === null) {
+//  return res.status(ERROR_VALIDATION).json({ message: 'Пользователь с указанным id не найден' });
+//     }
+//     return res.status(SUCCESS).json(result);
+//   } catch (e) {
+//     if (e.name === 'ValidationError') {
+//       console.error(e);
+// return res.status(ERROR_VALIDATION).send({ message: 'Пер некорре данные при об пря' });
+//     }
+//     console.log(e);
+//     return res.status(ERROR_SERVER).json({ message: 'Произошла ошибка' });
+//   }
+// };
+
+const updateUser = async (req, res, next) => {
   try {
     const updates = req.body;
     const options = { new: true, runValidators: true };
-    const result = await User.findByIdAndUpdate(req.user._id, updates, options);
-    console.log(req.user);
-    if (result === null) {
-      return res.status(ERROR_VALIDATION).json({ message: 'Пользователь с указанным id не найден' });
-    }
+    const result = await User.findByIdAndUpdate(req.user._id, updates, options).orFail(new NotFoundError('Пользователь по указанному _id не найден'));
     return res.status(SUCCESS).json(result);
-  } catch (e) {
-    if (e.name === 'ValidationError') {
-      console.error(e);
-      return res.status(ERROR_VALIDATION).send({ message: 'Переданы некорректные данные при обновлении профиля' });
+  } catch (err) {
+    if (err.name === 'ValidationError') {
+      next(new ValidationError(`${Object.values(err.errors).map((error) => error.message).join(', ')}`));
+    } else {
+      next(err);
     }
-    console.log(e);
-    return res.status(ERROR_SERVER).json({ message: 'Произошла ошибка' });
+    return next(err);
   }
 };
 
-const updateAvatar = async (req, res) => {
+// const updateAvatar = async (req, res) => {
+//   try {
+//     const options = { new: true };
+//     const user = await User.findByIdAndUpdate(req.user, req.body, options);
+//     if (user === null) {
+//  return res.status(ERROR_VALIDATION).json({ message: 'Пользователь с указанным id не найден' });
+//     }
+//     return res.status(SUCCESS).json({ user });
+//   } catch (e) {
+//     if (e.name === 'ValidationError') {
+//       console.error(e);
+// return res.status(ERROR_VALIDATION).send({ message: 'Перы неко данные при обновлении аватара' });
+//     }
+//     console.log(e);
+//     return res.status(ERROR_SERVER).json({ message: 'Произошла ошибка' });
+//   }
+// };
+
+const updateAvatar = async (req, res, next) => {
   try {
     const options = { new: true };
-    const user = await User.findByIdAndUpdate(req.user, req.body, options);
-    if (user === null) {
-      return res.status(ERROR_VALIDATION).json({ message: 'Пользователь с указанным id не найден' });
-    }
+    const user = await User.findByIdAndUpdate(req.user, req.body, options).orFail(new NotFoundError('Пользователь по указанному _id не найден'));
     return res.status(SUCCESS).json({ user });
-  } catch (e) {
-    if (e.name === 'ValidationError') {
-      console.error(e);
-      return res.status(ERROR_VALIDATION).send({ message: 'Переданы некорректные данные при обновлении аватара' });
+  } catch (err) {
+    if (err.name === 'ValidationError') {
+      next(new ValidationError(`${Object.values(err.errors).map((error) => error.message).join(', ')}`));
+    } else {
+      return next(err);
     }
-    console.log(e);
-    return res.status(ERROR_SERVER).json({ message: 'Произошла ошибка' });
+    return next(err);
   }
 };
 

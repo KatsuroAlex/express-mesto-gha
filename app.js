@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const { errors } = require('celebrate');
 const router = require('./routes');
+const handleErrors = require('./middlewares/handleErrors');
 
 const { PORT = 3000 } = process.env;
 const app = express();
@@ -14,13 +15,12 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 
-// app.use((req, res, next) => {
-//   req.user = { _id: '638a18e5564e527e4b5bd599' };
-//   next();
-// });
-
 /// основные роуты
 app.use(router);
+
+app.use(handleErrors);
+
+app.use(errors());
 
 // подключаемся к серверу mongo
 mongoose.set('strictQuery', true);
