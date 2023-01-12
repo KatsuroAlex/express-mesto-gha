@@ -42,80 +42,8 @@ const createUser = async (req, res, next) => {
       } else {
         next(err);
       }
-      // .catch((err) => {
-      //   if (err.name === 'ValidationError') {
-      //     console.log(err);
-      //     return res.status(ERROR_VALIDATION).send({ message: 'Переданы некорректные ' });
-      //   }
-      //   if (err.name === 'MongoError' && err.code === 11000) {
-      //     console.log(err);
-      // return res.status(ERROR_USER_EXIST).send({ message: 'Поль c таким email уже существует' });
-      //   }
-
-    //   console.error(err);
-    //   return res.status(ERROR_SERVER).json({ message: 'Произошла ошибка' });
-    // });
     });
 };
-
-//     bcrypt.hash(password, 10)
-//       try {
-//         ((hash) => User.create({
-//           name,
-//           about,
-//           avatar,
-//           email: req.body.email,
-//           password: hash,
-//         }))
-//         } catch (err) {
-//           throw new ValidationError('Пароль отсутствует или короче четырех символов');
-//         }
-
-//     return res.status(USER_CREATED).json(user);
-//   } catch (e) {
-//     if (e.name === 'ValidationError') {
-//       console.log(e);
-//       return res.status(ERROR_VALIDATION).send({ message: 'Переданы некорректные ' });
-//     }
-//     console.error(e);
-//     return res.status(ERROR_SERVER).json({ message: 'Произошла ошибка' });
-//   }
-// };
-
-// const createUser = (req, res, next) => {
-//   const {
-//     name,
-//     about,
-//     avatar,
-//     email,
-//     password,
-//   } = req.body;
-
-//   if (!password || password.length < 4) {
-//     throw new ValidationError('Пароль отсутствует или короче четырех символов');
-//   }
-
-//   // хешируем пароль
-//   bcrypt.hash(password, 10)
-//     .then((hash) => User.create({
-//       name,
-//       about,
-//       avatar,
-//       email: req.body.email,
-//       password: hash,
-//     }))
-//     .then((user) => res.json(user))
-//     .catch((err) => {
-//       if (err.name === 'ValidationError') {
-//         console.log(err);
-//         res.status(ERROR_VALIDATION).send({ message: 'Переданы некорректные данные' });
-//       } else if (err.name === 'MongoError' && err.code === 11000) {
-//         next(new UserExistError('Пользователь с таким email уже существует'));
-//       } else {
-//         next(err);
-//       }
-//     });
-// };
 
 const login = (req, res, next) => {
   const { email, password } = req.body;
@@ -142,8 +70,6 @@ const getUsers = async (req, res, next) => {
     return res.status(SUCCESS).json({ users });
   } catch (err) {
     return next(err);
-    // console.log(e);
-    // return res.status(ERROR_SERVER).json({ message: 'Произошла ошибка' });
   }
 };
 
@@ -168,7 +94,7 @@ const getUser = async (req, res, next) => {
     } else {
       next(err);
     }
-    return next(err);
+    next(err);
   }
   //   catch (e) {
   //   if (e.name === 'CastError') {

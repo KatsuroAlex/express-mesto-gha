@@ -18,9 +18,9 @@ app.use(cookieParser());
 /// основные роуты
 app.use(router);
 
-app.use(handleErrors);
-
 app.use(errors());
+
+app.use(handleErrors);
 
 // подключаемся к серверу mongo
 mongoose.set('strictQuery', true);

@@ -9,8 +9,10 @@ const {
   ERROR_NOT_FOUND,
 } = require('../errors/constants');
 
-router.post('/signup', validateSignup, createUser);
-router.post('/signin', validateSignin, login);
+// router.post('/signup', validateSignup, createUser);
+// router.post('/signin', validateSignin, login);
+router.post('/signup', createUser);
+router.post('/signin', login);
 
 router.use(validateAuth, auth);
 
