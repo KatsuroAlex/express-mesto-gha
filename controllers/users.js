@@ -16,7 +16,7 @@ const createUser = async (req, res, next) => {
     name,
     about,
     avatar,
-    email,
+    // email,
     password,
   } = req.body;
 
@@ -94,7 +94,7 @@ const getUser = async (req, res, next) => {
     } else {
       next(err);
     }
-    next(err);
+    return next(err);
   }
   //   catch (e) {
   //   if (e.name === 'CastError') {
