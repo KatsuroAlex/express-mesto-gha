@@ -36,7 +36,7 @@ router.post('/signup', celebrate({
       return helpers.message('Неверный формат ссылки на изображение');
     }),
     // email: Joi.string().required().min(2).max(30),
-    email: Joi.string().custom((value, helpers) => {
+    email: Joi.string().required().custom((value, helpers) => {
       if (validator.isEmail(value)) return value;
       return helpers.message('Неверный формат почты');
     }),
@@ -54,7 +54,7 @@ router.post('/signin', celebrate({
       return helpers.message('Неверный формат ссылки на изображение');
     }),
     // email: Joi.string().required().min(2).max(30),
-    email: Joi.string().custom((value, helpers) => {
+    email: Joi.string().required().custom((value, helpers) => {
       if (validator.isEmail(value)) return value;
       return helpers.message('Неверный формат почты');
     }),
