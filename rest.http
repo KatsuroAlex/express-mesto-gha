@@ -1,11 +1,21 @@
-### Авторизация
+### Вход в аккаунт
 POST http://localhost:3000/signin
 Content-Type: application/json
 
 {
-  "name": "admin",
-  "about": "admin"
+  "email": "admin@mail.ru",
+  "password": "admin12"
 }
+
+### Регистрация
+POST http://localhost:3000/signup
+Content-Type: application/json
+
+{
+  "email": "admin@mail.ru",
+  "password": "admin12"
+}
+
 
 
 
@@ -13,7 +23,7 @@ Content-Type: application/json
 GET http://localhost:3000/users
 
 ### возвращает пользователя по ID
-GET http://localhost:3000/users/638a18e5564e527e4b5bd598
+GET http://localhost:3000/users/63c0678ce599c98e14cec03a
 
 
 ### Создает пользователя
