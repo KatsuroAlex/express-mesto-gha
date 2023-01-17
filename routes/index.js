@@ -11,28 +11,35 @@ const {
   ERROR_NOT_FOUND,
 } = require('../errors/constants');
 
-const checkLink = Joi.string()
-  .custom((value, helpers) => {
-    if (validator.isURL(value)) return value;
-    return helpers.message('Неверный формат ссылки на изображение');
-  });
+// // ф-ия проверки ссылки на аватар
+// const checkLink = Joi.string()
+//   .custom((value, helpers) => {
+//     if (validator.isURL(value)) return value;
+//     return helpers.message('Неверный формат ссылки на изображение');
+//   });
 
-// вспомогательная ф-ия проверки email
-const checkEmail = Joi.string()
-  .required()
-  .custom((value, helpers) => {
-    if (validator.isEmail(value)) return value;
-    return helpers.message('Неверный формат почты');
-  });
+// // ф-ия проверки email
+// const checkEmail = Joi.string()
+//   .required()
+//   .custom((value, helpers) => {
+//     if (validator.isEmail(value)) return value;
+//     return helpers.message('Неверный формат почты');
+//   });
 
 // router.post('/signup', validateSignup, createUser);
 router.post('/signup', celebrate({
   body: Joi.object().keys({
     name: Joi.string().min(2).max(30),
     about: Joi.string().min(2).max(30),
-    avatar: Joi.string().custom(checkLink),
+    avatar: Joi.string().custom((value, helpers) => {
+      if (validator.isURL(value)) return value;
+      return helpers.message('Неверный формат ссылки на изображение');
+    }),
     // email: Joi.string().required().min(2).max(30),
-    email: Joi.string().custom(checkEmail),
+    email: Joi.string().custom((value, helpers) => {
+      if (validator.isEmail(value)) return value;
+      return helpers.message('Неверный формат почты');
+    }),
     password: Joi.string().required().min(4).max(36),
   }),
 }), createUser);
@@ -42,9 +49,15 @@ router.post('/signin', celebrate({
   body: Joi.object().keys({
     name: Joi.string().min(2).max(30),
     about: Joi.string().min(2).max(30),
-    avatar: Joi.string().custom(checkLink),
+    avatar: Joi.string().custom((value, helpers) => {
+      if (validator.isURL(value)) return value;
+      return helpers.message('Неверный формат ссылки на изображение');
+    }),
     // email: Joi.string().required().min(2).max(30),
-    email: Joi.string().custom(checkEmail),
+    email: Joi.string().custom((value, helpers) => {
+      if (validator.isEmail(value)) return value;
+      return helpers.message('Неверный формат почты');
+    }),
     password: Joi.string().required().min(4).max(36),
   }),
 }), login);
