@@ -16,7 +16,7 @@ const createUser = async (req, res, next) => {
     name,
     about,
     avatar,
-    email,
+    // email,
     password,
   } = req.body;
 
@@ -90,7 +90,7 @@ const getUser = async (req, res, next) => {
     return res.status(SUCCESS).json(user);
   } catch (err) {
     if (err.name === 'CastError') {
-      next(new ValidationError('Переданы некорректные данные id пользователя'));
+      next(new NotFoundError('Переданы некорректные данные id пользователя'));
     } else {
       next(err);
     }

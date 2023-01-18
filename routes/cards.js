@@ -5,7 +5,7 @@ const validator = require('validator');
 const {
   getCards, createCard, deleteCard, likeCard, dislikeCard,
 } = require('../controllers/cards');
-const { validateCard, validateCreateCard } = require('../middlewares/validation');
+const { validateCard } = require('../middlewares/validation');
 
 router.get('/', getCards); // возвращает все карточки
 // router.post('/', validateCreateCard, createCard); // создает карточку
