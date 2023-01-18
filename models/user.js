@@ -39,14 +39,13 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
-    // minlength: [4, 'пароль не может быть короче четырех символов'],
     minlength: 4,
     select: false,
   },
 });
 
 userSchema.statics.findUserByCredentials = function getUserAuth(email, password) {
-  return this.findOne({ email }).select('+password')
+  return this.findOne({ email }).select('-password')
     .then((user) => {
       if (!user) {
         return Promise.reject(new AuthError('Неправильные почта или пароль'));
@@ -61,6 +60,12 @@ userSchema.statics.findUserByCredentials = function getUserAuth(email, password)
         });
     });
 };
+
+// userSchema.methods.toJSON = function noShowPassword() {
+//   const obj = this.toObject();
+//   delete obj.password;
+//   return obj;
+// };
 
 // создаём модель и экспортируем её
 module.exports = mongoose.model('user', userSchema);
