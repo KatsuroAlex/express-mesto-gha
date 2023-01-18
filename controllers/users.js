@@ -16,12 +16,17 @@ const createUser = async (req, res, next) => {
     name,
     about,
     avatar,
-    // email,
+    email,
     password,
   } = req.body;
 
   if (!password || password.length < 4) {
     throw new ValidationError('Пароль отсутствует или короче четырех символов');
+  }
+
+  const existingUser = await User.findOne({ email });
+  if (existingUser) {
+    return next(new UserExistError('Пользователь c таким email уже существует'));
   }
 
   // хешируем пароль

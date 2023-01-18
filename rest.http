@@ -12,8 +12,11 @@ POST http://localhost:3000/signup
 Content-Type: application/json
 
 {
-  "email": "admin@mail.ru",
-  "password": "admin12"
+  "email": "em3@em3.ru",
+  "password": "longPass",
+  "name": "test",
+  "about": "about",
+  "avatar": "https://ya.ru/av.bmp"
 }
 
 
@@ -23,7 +26,7 @@ Content-Type: application/json
 GET http://localhost:3000/users
 
 ### возвращает пользователя по ID
-GET http://localhost:3000/users/63c0678ce599c98e14cec03a
+GET http://localhost:3000/users/63a6e8d4a3af445c714570cn
 
 
 ### Создает пользователя
@@ -46,16 +49,6 @@ Content-Type: Bearer
   "email": "admin",
   "password": "admin"
 }
-
-### ЛОгин
-POST http://localhost:3000/signIn
-Content-Type: application/json
-
-{
-  "email": "admin",
-  "password": "admin"
-}
-
 
 ### Обновить данные пользователя
 PATCH http://localhost:3000/users/me
