@@ -45,9 +45,13 @@ Content-Type: application/json
 GET http://localhost:3000/users/me
 Content-Type: Bearer
 
+# {
+#   "email": "admin",
+#   "password": "admin"
+# }
+
 {
-  "email": "admin",
-  "password": "admin"
+  "id": "63a6e8d4a3af445c714570cb"
 }
 
 ### Обновить данные пользователя

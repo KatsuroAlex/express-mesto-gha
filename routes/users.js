@@ -7,6 +7,7 @@ const {
 const { validateUserProfile, validateUserAvatar } = require('../middlewares/validation');
 
 router.get('/', getUsers); // возвращает всех пользователей
+router.get('/me', findUser); // найти пользователя
 // router.post('/', createUser); // создает пользователя
 // router.get('/:id', validateUser, getUser); // возвращает пользователя по ID
 router.get('/:id', celebrate({
@@ -16,7 +17,7 @@ router.get('/:id', celebrate({
 }), getUser); // возвращает пользователя по ID
 
 router.patch('/me', validateUserProfile, updateUser);
+
 router.patch('/me/avatar', validateUserAvatar, updateAvatar);
-router.get('/me', findUser); // найти пользователя
 
 module.exports = router;
