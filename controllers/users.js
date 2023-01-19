@@ -50,23 +50,43 @@ const createUser = async (req, res, next) => {
     });
 };
 
-const login = (req, res, next) => {
-  const { email, password } = req.body;
-  User.findUserByCredentials(email, password)
-    .then((user) => {
-      const token = jwt.sign(
-        { _id: user._id },
-        NODE_ENV === 'production' ? JWT_SECRET : 'some-secret-key',
-        { expiresIn: '7d' },
-      );
-      res
-        .cookie('token', token, {
-          maxAge: 3600000 * 24 * 7,
-          httpOnly: true,
-        })
-        .send({ token });
-    })
-    .catch(next);
+// const login = (req, res, next) => {
+//   const { email, password } = req.body;
+//   User.findUserByCredentials(email, password)
+//     .then((user) => {
+//       const token = jwt.sign(
+//         { _id: user._id },
+//         NODE_ENV === 'production' ? JWT_SECRET : 'some-secret-key',
+//         { expiresIn: '7d' },
+//       );
+//       res
+//         .cookie('token', token, {
+//           maxAge: 3600000 * 24 * 7,
+//           httpOnly: true,
+//         })
+//         .send({ token });
+//     })
+//     .catch(next);
+// };
+
+const login = async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
+    const user = await User.findUserByCredentials(email, password);
+    const token = jwt.sign(
+      { _id: user._id },
+      NODE_ENV === 'production' ? JWT_SECRET : 'some-secret-key',
+      { expiresIn: '7d' },
+    );
+    res
+      .cookie('token', token, {
+        maxAge: 3600000 * 24 * 7,
+        httpOnly: true,
+      })
+      .send({ token });
+  } catch (err) {
+    next(err);
+  }
 };
 
 const getUsers = async (req, res, next) => {
@@ -78,20 +98,26 @@ const getUsers = async (req, res, next) => {
   }
 };
 
-const findUser = (req, res, next) => {
-  User.findById(req.user._id)
-    .orFail(new NotFoundError('Пользователь по указанному _id не найден'))
-    .then((user) => res.send(user))
-    .catch(next);
+// const findUser = (req, res, next) => {
+//   User.findById(req.user._id)
+//     .orFail(new NotFoundError('Пользователь по указанному _id не найден'))
+//     .then((user) => res.send(user))
+//     .catch(next);
+// };
+
+const findUser = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user._id).orFail(new NotFoundError('Пользователь по указанному _id не найден'));
+    return res.send({ user });
+  } catch (err) {
+    return next(err);
+  }
 };
 
 const getUser = async (req, res, next) => {
   try {
     const { id } = req.params; // Достаем id через деструктуризацию
     const user = await User.findById(id).orFail(new NotFoundError('Пользователь по указанному id не найден'));
-    // if (user === null) {
-    //  return res.status(ERROR_NOT_FOUND).json({ message: 'Пользоь по указанному id не найден' });
-    // }
     return res.status(SUCCESS).json(user);
   } catch (err) {
     if (err.name === 'CastError') {
@@ -101,35 +127,7 @@ const getUser = async (req, res, next) => {
     }
     return next(err);
   }
-  //   catch (e) {
-  //   if (e.name === 'CastError') {
-  //     console.error(e);
-  //     return res.status(ERROR_VALIDATION).send({ message: 'Переданы е данные id пользователя' });
-  //   }
-  //   console.log(e);
-  //   return res.status(ERROR_SERVER).json({ message: 'Произошла ошибка' });
-  // }
 };
-
-// const updateUser = async (req, res) => {
-//   try {
-//     const updates = req.body;
-//     const options = { new: true, runValidators: true };
-//     const result = await User.findByIdAndUpdate(req.user._id, updates, options);
-//     console.log(req.user);
-//     if (result === null) {
-//  return res.status(ERROR_VALIDATION).json({ message: 'Пользователь с указанным id не найден' });
-//     }
-//     return res.status(SUCCESS).json(result);
-//   } catch (e) {
-//     if (e.name === 'ValidationError') {
-//       console.error(e);
-// return res.status(ERROR_VALIDATION).send({ message: 'Пер некорре данные при об пря' });
-//     }
-//     console.log(e);
-//     return res.status(ERROR_SERVER).json({ message: 'Произошла ошибка' });
-//   }
-// };
 
 const updateUser = async (req, res, next) => {
   try {
@@ -146,24 +144,6 @@ const updateUser = async (req, res, next) => {
     return next(err);
   }
 };
-
-// const updateAvatar = async (req, res) => {
-//   try {
-//     const options = { new: true };
-//     const user = await User.findByIdAndUpdate(req.user, req.body, options);
-//     if (user === null) {
-//  return res.status(ERROR_VALIDATION).json({ message: 'Пользователь с указанным id не найден' });
-//     }
-//     return res.status(SUCCESS).json({ user });
-//   } catch (e) {
-//     if (e.name === 'ValidationError') {
-//       console.error(e);
-// return res.status(ERROR_VALIDATION).send({ message: 'Перы неко данные при обновлении аватара' });
-//     }
-//     console.log(e);
-//     return res.status(ERROR_SERVER).json({ message: 'Произошла ошибка' });
-//   }
-// };
 
 const updateAvatar = async (req, res, next) => {
   try {

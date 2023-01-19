@@ -12,8 +12,8 @@ POST http://localhost:3000/signup
 Content-Type: application/json
 
 {
-  "email": "em3@em3.ru",
-  "password": "longPass",
+  "email": "admiвsыdn@admin.ru",
+  "password": "longPass123",
   "name": "test",
   "about": "about",
   "avatar": "https://ya.ru/av.bmp"
@@ -26,7 +26,7 @@ Content-Type: application/json
 GET http://localhost:3000/users
 
 ### возвращает пользователя по ID
-GET http://localhost:3000/users/63a6e8d4a3af445c714570cn
+GET http://localhost:3000/users/63a6e8d4a3af445c714570cb
 
 
 ### Создает пользователя
@@ -43,16 +43,13 @@ Content-Type: application/json
 
 ### Найти пользователя
 GET http://localhost:3000/users/me
-Content-Type: Bearer
+# Content-Type: Bearer
 
 # {
-#   "email": "admin",
-#   "password": "admin"
+#   "email": "admin@mail.ru",
+#   "password": "admin12"
 # }
 
-{
-  "id": "63a6e8d4a3af445c714570cb"
-}
 
 ### Обновить данные пользователя
 PATCH http://localhost:3000/users/me
@@ -84,9 +81,8 @@ POST http://localhost:3000/cards
 Content-Type: application/json
 
 {
-  "name": "1345",
+  "name": "111111",
   "link": "5646456",
-  "owner": "638a18e5564e527e4b5bd599"
 }
 
 ### удаляет карточку по id
