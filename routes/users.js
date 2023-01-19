@@ -8,16 +8,12 @@ const { validateUserProfile, validateUserAvatar } = require('../middlewares/vali
 
 router.get('/', getUsers); // возвращает всех пользователей
 router.get('/me', findUser); // найти пользователя
-// router.post('/', createUser); // создает пользователя
-// router.get('/:id', validateUser, getUser); // возвращает пользователя по ID
 router.get('/:id', celebrate({
   params: Joi.object().keys({
     id: Joi.string().alphanum().length(24),
   }),
 }), getUser); // возвращает пользователя по ID
-
 router.patch('/me', validateUserProfile, updateUser);
-
 router.patch('/me/avatar', validateUserAvatar, updateAvatar);
 
 module.exports = router;

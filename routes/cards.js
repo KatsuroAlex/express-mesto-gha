@@ -8,7 +8,6 @@ const {
 const { validateCard } = require('../middlewares/validation');
 
 router.get('/', getCards); // возвращает все карточки
-// router.post('/', validateCreateCard, createCard); // создает карточку
 router.post('/', celebrate({
   body: Joi.object().keys({
     name: Joi.string().required().min(2).max(30),

@@ -12,62 +12,41 @@ const {
 } = require('../errors/constants');
 
 const createUser = async (req, res, next) => {
-  const {
-    name,
-    about,
-    avatar,
-    email,
-    password,
-  } = req.body;
-
-  if (!password || password.length < 4) {
-    throw new ValidationError('Пароль отсутствует или короче четырех символов');
-  }
-
-  const existingUser = await User.findOne({ email });
-  if (existingUser) {
-    return next(new UserExistError('Пользователь c таким email уже существует'));
-  }
-
-  // хешируем пароль
-  const hash = await bcrypt.hash(password, 10);
-  return User.create({
-    name,
-    about,
-    avatar,
-    email: req.body.email,
-    password: hash,
-  })
-    .then((user) => res.status(200).json(user))
-    .catch((err) => {
-      if (err.name === 'ValidationError') {
-        next(new ValidationError(`${Object.values(err.errors).map((error) => error.message).join(', ')}`));
-      } else if (err.name === 'MongoError' && err.code === 11000) {
-        next(new UserExistError('Пользователь c таким email уже существует'));
-      } else {
-        next(err);
-      }
+  try {
+    const {
+      name,
+      about,
+      avatar,
+      email,
+      password,
+    } = req.body;
+    if (!password || password.length < 4) {
+      throw new ValidationError('Пароль отсутствует или короче четырех символов');
+    }
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      throw new UserExistError('Пользователь c таким email уже существует');
+    }
+    // хешируем пароль
+    const hash = await bcrypt.hash(password, 10);
+    const user = await User.create({
+      name,
+      about,
+      avatar,
+      email,
+      password: hash,
     });
+    res.status(200).json(user);
+  } catch (err) {
+    if (err.name === 'ValidationError') {
+      next(new ValidationError(`${Object.values(err.errors).map((error) => error.message).join(', ')}`));
+    } else if (err.name === 'MongoError' && err.code === 11000) {
+      next(new UserExistError('Пользователь c таким email уже существует'));
+    } else {
+      next(err);
+    }
+  }
 };
-
-// const login = (req, res, next) => {
-//   const { email, password } = req.body;
-//   User.findUserByCredentials(email, password)
-//     .then((user) => {
-//       const token = jwt.sign(
-//         { _id: user._id },
-//         NODE_ENV === 'production' ? JWT_SECRET : 'some-secret-key',
-//         { expiresIn: '7d' },
-//       );
-//       res
-//         .cookie('token', token, {
-//           maxAge: 3600000 * 24 * 7,
-//           httpOnly: true,
-//         })
-//         .send({ token });
-//     })
-//     .catch(next);
-// };
 
 const login = async (req, res, next) => {
   try {
@@ -97,13 +76,6 @@ const getUsers = async (req, res, next) => {
     return next(err);
   }
 };
-
-// const findUser = (req, res, next) => {
-//   User.findById(req.user._id)
-//     .orFail(new NotFoundError('Пользователь по указанному _id не найден'))
-//     .then((user) => res.send(user))
-//     .catch(next);
-// };
 
 const findUser = async (req, res, next) => {
   try {
