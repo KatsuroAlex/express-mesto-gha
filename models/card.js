@@ -25,10 +25,6 @@ const cardSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'user',
     default: [],
-    validate: {
-      validator: (v) => validator.isURL(v),
-      message: 'Неверный формат URL',
-    },
   }],
   createdAt: {
     type: Date,
